@@ -1,7 +1,4 @@
-# classic_asp
-tutorial of classic asp.  
-  
----
+# Classic ASP 입문
   
 ASP -> Spring 프로젝트에 투입되게 되었다.  
 프로젝트 진행 전 classic asp를 학습한다.  
@@ -43,49 +40,32 @@ ASP (Classic ASP 라고도 함)는 MS의 첫 서버사이트 스크립팅 언어
   
 
 ---
-  
-### ASP.NET
 
-ASP.NET은 Classic ASP의 후속으로 2002년에 나옴.  
-**.aspx** 확장자를 사용하며 일반적으로 C# 언어를 사용함.  
-ASP.NET Core를 위해 ASP.NET 4 이후로 업데이트는 없음.  
+### 기타 ASP 기술
   
+- **ASP.NET** :  
+  ASP.NET은 Classic ASP의 후속으로 2002년에 나옴.  
+  **.aspx** 확장자를 사용하며 일반적으로 C# 언어를 사용함.  
+  ASP.NET Core를 위해 ASP.NET 4 이후로 업데이트는 없음.  
+- **ASP.NET Web Pages** :  
+  ASP.NET Web Pages는 SPA임.  
+  PHP와 Classic ASP와 매우 유사함.  
+  ASP.NET Web Pages는 ASP.NET Core에 기본 스펙으로 들어가고 있음.
+- **ASP.NET MVC** :  
+  MVC 패턴의 ASP.NET  
+  ASP.NET Core에 기본 스펙으로 들어가고 있음.  
+- **ASP.NET Web API** :  
+  API 어플리케이션 모델임.  
+  ASP.NET Core에 기본 스펙으로 들어가고 있음.  
+- **ASP.NET Web Form** :  
+  이벤트 기반 응용 프로그램 모델임.
+- **ASP.NET Core** :  
+  2016년 출시.  
+  ASP.NET MVC, Web API, Web Pages를 하나의 프레임워크로 병합함.
 
----
-  
-### ASP.NET Web Pages
-
-ASP.NET Web Pages는 SPA임.  
-PHP와 Classic ASP와 매우 유사함.  
-ASP.NET Web Pages는 ASP.NET Core에 기본 스펙으로 들어가고 있음.
-  
-
----
-  
-### ASP.NET MVC
-
-MVC 패턴의 ASP.NET  
-ASP.NET Core에 기본 스펙으로 들어가고 있음.  
-  
-
----
-  
-### ASP.NET Web API
-
-API 어플리케이션 모델임.  
-ASP.NET Core에 기본 스펙으로 들어가고 있음.  
-  
 
 ---
-  
-### ASP.NET Web Form
 
-이벤트 기반 응용 프로그램 모델임
-  
+출처 : https://www.w3schools.com/asp/
 
----
-  
-### ASP.NET Core
-
-2016년 출시.  
-ASP.NET MVC, Web API, Web Pages를 하나의 프레임워크로 병합함.
+tags : asp, classic, 에이에스피, 클래식, 예제, 레거시, 지옥
