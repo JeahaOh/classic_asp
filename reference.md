@@ -2,7 +2,7 @@
 
 ---
 
-- 출처 : [https://www.w3schools.com/asp/](https://www.w3schools.com/asp/)  
+- 출처 : []()  
 - tags : asp, classic, 에이에스피, 클래식, 예제, 레거시, 지옥  
 
 ---
