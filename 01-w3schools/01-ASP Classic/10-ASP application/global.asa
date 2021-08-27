@@ -1,0 +1,6 @@
+<SCRIPT LANGUAGE=VBScript RUNAT=Server>
+  Sub Application_OnStart
+    application( "vartime" ) = ""
+    application( "users" ) = 1
+  End Sub
+</SCRIPT>
