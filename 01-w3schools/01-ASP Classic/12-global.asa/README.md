@@ -1,23 +1,23 @@
 # ASP Global.asa 파일
 
-Globals.asa 파일은 ASP 어플리케이션의 모든 페이지에서 엑세스 할 수 있는 객체, 변수 및 메소드의 선언을 포함할 수 있는 선택적 파일임.  
+Global.asa 파일은 ASP 어플리케이션의 모든 페이지에서 엑세스 할 수 있는 객체, 변수 및 메소드의 선언을 포함할 수 있는 선택적 파일임.  
   
-유효한 모든 프라우져 스크립트(JS, VBScript, JScript, PerlScript)등 Globals.asa 파일내에서 사용 가능.  
+유효한 모든 프라우져 스크립트(JS, VBScript, JScript, PerlScript)등 Global.asa 파일내에서 사용 가능.  
   
-Globals.asa 파일에는 다음 항목만 포함할 수 있음.  
+Global.asa 파일에는 다음 항목만 포함할 수 있음.  
 - 어플리케이션 이벤트
 - 세션 이벤트
 - `<object>` 선언
 - TypeLibrary 선언
 - #include 지시문
 
-Globals.asa 파일은 ASP 어플리케이션의 루트 디렉토리에 저장해야 하며 각 어플리케이션에는 Globals.asa 파일이 하나만 있을 수 있음
+Global.asa 파일은 ASP 어플리케이션의 루트 디렉토리에 저장해야 하며 각 어플리케이션에는 Global.asa 파일이 하나만 있을 수 있음
 
   ---  
 
-## Globals.asa의 이벤트
+## Global.asa의 이벤트
 
-Globals.asa에서 어플리케이션/세션이 시작될 때 수행할 작업과 어플리케이션/세션이 종료될 때 수행할 작업을 어플리케이션 및 세션 객체에 알릴 수 있음. 이에 대한 코드는 이벤트 핸들러에 배치됨. Globals.asa 파일에는 네 가지 유형의 이벤트가 포함될 수 있음.  
+Global.asa에서 어플리케이션/세션이 시작될 때 수행할 작업과 어플리케이션/세션이 종료될 때 수행할 작업을 어플리케이션 및 세션 객체에 알릴 수 있음. 이에 대한 코드는 이벤트 핸들러에 배치됨. Global.asa 파일에는 네 가지 유형의 이벤트가 포함될 수 있음.  
   
 - **Application_OnStart** : First 사용자가 ASP 어플리케이션의 첫 페이지를 호출할 때 발생.  
   이 이벤트는 웹 서버를 다시 시작한 후 또는 Global.asa 파일을 편집 후에 발생함.  
@@ -28,7 +28,7 @@ Globals.asa에서 어플리케이션/세션이 시작될 때 수행할 작업과
 - **Application_OnEnd** : 이 이벤트는 마지막 사용자가 세션을 종료한 후에 발생함.  
   일반적으로 이 이벤트는 웹 서버가 중지될 때 발생함. 이 절차는 레코드 삭제 또는 텍스트 파일에 정보 쓰기와 같이 어플리케이션이 중지된 후 설정을 정리하는데 사용됨.
 
-Globals.asa
+Global.asa
 ```script
   <script language="vbscript" runat="server" >
 
@@ -58,7 +58,7 @@ Globals.asa
 
 ## **<객체>** 선언
 
-`<object>` 태그를 사용하여 Globals.asa에서 세션 또는 어플리케이션 범위의 객체를 만들 수 있음.  
+`<object>` 태그를 사용하여 Global.asa에서 세션 또는 어플리케이션 범위의 객체를 만들 수 있음.  
 `<object>` 태그는 `<script>` 태그 밖에 있어야 함.
 
 ```xml
@@ -144,7 +144,7 @@ BUT, METADATA 태그는 Global.sas 파일의 상단에 표시하는 것이 좋�
 
 ### 제한
 
-Globals.asa 파일에 포함할 수 있는 항목데 대한 제한 사항 :  
+Global.asa 파일에 포함할 수 있는 항목데 대한 제한 사항 :  
 - Global.asa 파일에 작성된 텍스트는 표시할 수 없음. 이 파일은 정보를 표시할 수 없음.
 - Application_OnStart 및 Application_OnEnd 서브루틴에서는 서버 및 어플리케이션 개체만 사용할 수 있음.  
   Session_OnStart 서브루틴에서 내장 객체를 사용할 수 있음.
