@@ -233,3 +233,7 @@ Application_OnStart 서브루팅은 웹 서버가 시작될 때 발생함.
     There are <%=application( "visitors" )%> on online now!
   </head>
 ```
+
+---
+
+- 출처 : [https://www.w3schools.com/asp/asp_globalasa.asp](https://www.w3schools.com/asp/asp_globalasa.asp)  
