@@ -112,9 +112,124 @@ TypeLibrary는 COM 개체에 해당하는 DLL 파일의 내용에 대한 컨테�
   
 
 ### 문법
-
+  
 ```xml
   <!-- METADATA TYPE="TypeLib"
     file="filename" uuid="id" version="number" lcid="localeid"
    -->
+```
+  
+| Parameter | Description |
+| :--- : | :---: |
+| file | 유형 라이브러리의 절대 경로를 지정함. 파일 매개변수 또는 UUID 매개변수가 필요함. |
+| UUID | 유형 라이브러리의 고유 식별자 지정. 파일 매개변수 또는 UUID 매개변수가 필요함. |
+| version | 선택사항으로 버젼을 선택하는데 사용. 요청된 버젼이 없다면 가장 최근 벼전이 사용됨. |
+| lcid | 선택사항으로 유형 라이브러리에 사용할 지역 식별자. |
+  
+
+### 오류 값
+  
+서버는 다음 오류 메세지중 하나를 반환할 수 있음.
+  
+| Parameter | Description |
+| :--- : | :---: |
+| ASP 0222 | 잘못된 라이브러리 사양 |
+| ASP 0223 | 라이브러리 찾을 수 없음 |
+| ASP 0224 | 라이브러리 로드 불가 |
+| ASP 0225 | 라이브러리 래핑 불가 |
+  
+METADATA 태그는 Global.sas 파일의 모든 위치에 나타날 수 있음. (`<script>` 태그 내 외부).  
+BUT, METADATA 태그는 Global.sas 파일의 상단에 표시하는 것이 좋음.
+  
+
+### 제한
+
+Globals.asa 파일에 포함할 수 있는 항목데 대한 제한 사항 :  
+- Global.asa 파일에 작성된 텍스트는 표시할 수 없음. 이 파일은 정보를 표시할 수 없음.
+- Application_OnStart 및 Application_OnEnd 서브루틴에서는 서버 및 어플리케이션 개체만 사용할 수 있음.  
+  Session_OnStart 서브루틴에서 내장 객체를 사용할 수 있음.
+  Session_OnEnd 서브루틴에서 서버, 어플리케이션 및 세션 개체를 사용할 수 있음.  
+  
+
+### 서브루틴 사용법
+
+Global.asa는 종종 변수를 초기화 하는 데 사용함.  
+방문자가 웹 사이트에 처음 도착한 시간을 감지하는 방법임.  
+시간을 "started"라는 세션 변수에 저장되며 "started" 변수의 값은 어플리케이션의 모든 ASP 페이지에 엑세스할 수 있음.  
+  
+```asp
+  <script language="vbscript" runat="server" >
+    sub Session_OnStart
+      Session( "started" ) = now()
+    end sub
+  </script>
+```
+  
+아래 예는 모든 신규 방문자를 다른 페이지로 리다이렉션 하는 방법
+  
+```asp
+  <script language="vbscript" runat="server">
+    sub Session_OnStart
+      response.redirect( "newpage.asp" )
+    end sub
+  </script>
+```
+
+그리고 Global.asa 파일에 기능을 포함할 수 있음.  
+  
+Application_OnStart 서브루팅은 웹 서버가 시작될 때 발생함.  
+그런 다음 Application_OnStart 서브루틴은 "getcustomers" 라는 다른 서브루틴을 호출함.  
+"getcustomers" 서브루틴은 DB의 "customers" 테이블에서 데이터를 배열로 가져옴.  
+
+```asp
+  <script language="vbscript" runat="server">
+    sub Application_OnStart
+      getCustomers
+    end sub
+
+    sub getCustomers
+      set conn = Server.CreateObject( "ADODB.Connection" )
+      conn.Provider = "Microsoft.Jet.OLEDB.4.0"
+      con.Open "c:/webdata/northwind.mdb"
+
+      set rs = conn.execute( "SELECT NAME FROM customers" )
+      
+      Application( "customers" ) = rs.GetRows
+
+      rs.close
+      conn.close
+    end sub
+  </script>
+```
+  
+
+### Global.asa 예
+
+현재 방문자수를 계산하는 Global.asa 파일을 만들어 봄
+- Application_OnStart는 서버가 시작될 때 어플리케이션 변수 "visitors"를 0으로 할당.
+- Session_OnStart 서브루틴은 새 접속자가 접근할 때 마다 변수 "visitors"를 1씩 추가.
+- Session_OnEnd 서브루틴은 접속자가 나갈 때 마다 변수 "visitors"를 1씩 감소.
+
+```asp
+  sub Application_OnStart
+    Application( "visitors" ) = 0
+  end sub
+
+  sub Session_OnStart
+    Application.lock
+    Application( "visitors" ) = Application( "visitors" ) + 1
+    Application.unlock
+  end sub
+
+  sub Session_OnEnd
+    Application.lock
+    Application( "visitors" ) = Application( "visitors" ) - 1
+    Application.unlock
+  end sub
+```
+
+```asp
+  <head>
+    There are <%=application( "visitors" )%> on online now!
+  </head>
 ```
