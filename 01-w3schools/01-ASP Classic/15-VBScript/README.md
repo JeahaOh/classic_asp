@@ -131,6 +131,9 @@
   response.write( isDate( somedate ) & "<br/>" )
 ```
 
+  ---  
+  ---  
+
 ## VBScript 내장함수
 
 ### Uppercase or Lowercase a string
@@ -204,6 +207,557 @@
 ### Return a specified number of characters from a string
 
 ```asp
+  response.write( mid( txt, 9, 2 ) )
+```
+  
+
+  ---  
+  ---  
+  
+## Procedure
+  
+### Sub procedure
+  
+```asp
+  Sub mysub()
+    response.write("I was written by a sub procedure")
+  End Sub
+
+  response.write("I was written by the script<br>")
+  Call mysub()
+```
+  
+
+### function procedure
+  
+```asp
+  Function myfunction()
+    myfunction = Date()
+  End Function
+
+  response.write("Today's date: ")
+  response.write(myfunction())
+```
+
+  ---  
+  ---  
+  
+## ASP Response Object
+  
+### Redirect the user to another URL
+  
+```asp
+  <%
+    if request.form( "select" ) <> "" then
+      response.redirect( request.form( "select" ) )
+    end if
+  %>
+
+  <form action="example.asp" method="post">
+    <label for="select_server.asp">SERVER</label>
+    <input
+      type="radio" name="select" id="select_server.asp"
+      value="select_server.asp"
+    />
+    <br/>
+    <label for="select_text.asp">TEXT</label>
+    <input
+      type="radio" name="select" id="select_text.asp"
+      value="select_text.asp"
+    />
+    <input type="submit" value="GO!" />
+  </form>
+```
+
+### Random Links
+
+```asp
+  randomize()
+  r = rnd()
+
+  if r > 0.5 then
+    response.write( "<a href='https://www.w3schools.com/asp/asp_examples.asp'>w3school asp</a>" )
+  else
+    response.write( "<a href='javascript:void(0)'>nowhere</a>" )
+  end if
+```
+
+### Controlling Buffer
+
+```html
+  <% Response.Buffer = true %>
+  <!DOCTYPE html>
+  <html>
+  <body>
+    <p>
+      This text will be sent to your browser when my response buffer is flushed.
+    </p>
+    <% Response.Flush %>
+  </body>
+  </html>
+```
+
+### Clear the buffer
+
+```html
+  <% Response.Buffer = true %>
+  <!DOCTYPE html>
+  <html>
+  <body>
+    <p>This is some text I want to send to you.</p>
+    <p>No, I changed my mind. I wnat to clear the text.</p>
+    <% response.clear %>
+  </body>
+  </html>
+```
+
+### End a script in the middle of processing
+
+```asp
+  I am writing some text. This text will never be
+  <br>
+  <% response.end %>
+  finished! It's too late to write more!
+```
+
+### Set how many minutes a page will be cached in a browser before it expires
+
+```asp
+  <% response.expires = -1 %>
+  <p>This page will be refreshed with each access!</p>
+```
+
+### Set a date/time when a page cached in a browser will expire
+
+```asp
+  response.expiresAbsolute = #Aug 31,2021 09:30:00#
+```
+
+### Check if the user is still connected
+
+```asp
+  if response.isClientConnected = true then
+    response.write( "the user is still connected!" )
+  else
+    response.write( "the user is NOT connected!" )
+  end if
+```
+
+### Set the type of content
+
+```asp
+  response.contentType = "text/html" 
+```
+
+### Set the name of character set
+
+```asp
+  response.charset = "utf-8"
+```
+
+  ---  
+  ---  
+
+## ASP Request Object
+
+### Send extra information within a link
+
+```asp
+  <a href="example.asp?color=green">Example</a>
+  <%=Request.QueryString%>
+```
+
+### Send extra information within a link
+
+```asp
+  <a href="example.asp?color=green">Example</a>
+  <%=Request.QueryString%>
+```
+
+### A QueryString collection in its simplest use
+
+```asp
+  <form action="example.asp" method="get">
+    <label for="fname">First name : </label>
+    <input
+      type="text" name="fname" id="fname"
+    />
+    <br/>
+    <label for="lname">Last name : </label>
+    <input
+      type="text" name="lname" id="lname"
+    />
+    <br/>
+    <input type="submit" value="Submit" />
+  </form>
+
+  <%=Request.QueryString%>
+```
+
+### How to use information from forms
+
+```asp
+  <form action="example.asp" method="get">
+    <label for="name">Your name : </label>
+    <input type="text" name="name" id="name" size="20" />
+    <input type="submit" value="submit" />
+  </form>
+
+  <%
+    dim name, text
+    name = request.querystring( "name" )
+
+    if name <> "" then
+      response.write( "Hell the " & name & "!!<br/>" )
+    end if
+  %>
+```
+
+### More information from a form
+
+```asp
+  <form action="example.asp" method="post">
+    <label for="first">first name : </label>
+    <input
+      type="text" name="name" id="first"
+      size="20" value="FIRST"
+    />
+    <br/>
+    <label for="last">last name : </label>
+    <input
+      type="text" name="name" id="last"
+      size="20" value="LAST"
+    />
+    <input type="submit" value="submit" />
+  </form>
+
+  <p>The information received from the form above was : </p>
+  <%
+    if request.form( "name" ) <>"" then
+      %>
+      <p>name = <%=request.form( "name" )%></p>
+      <p>the name property's count = <%=request.form( "name" ).count%></p>
+      <p>first name = <%=request.form( "name" )(1)%></p>
+      <p>last name = <%=request.form( "name" )(2)%></p>
+      <%
+    end if
+  %>
+```
+
+### A form with checkboxes
+
+
+```asp
+  <%
+    fruits = request.form( "fruits" )
+  %>
+
+  <form action="example.asp" method="post">
+    <input
+      type="checkbox" name="fruits" id="apple" value="apple"
+      <%if instr( fruits, "apple" ) then response.write( "checked" )%>
+    />
+    <label for="apple">apple</label>
+    <br/>
+    <input
+      type="checkbox" name="fruits" id="kiwi" value="kiwi"
+      <%if instr( fruits, "kiwi" ) then response.write( "checked" )%>
+    />
+    <label for="kiwi">kiwi</label>
+    <br/>
+    <input
+      type="checkbox" name="fruits" id="banana" value="banana"
+      <%if instr( fruits, "banana" ) then response.write( "checked" )%>
+    />
+    <label for="banana">banana</label>
+    <br/>
+    <input type="submit" value="submit" />
+  </form>
+
+  <%
+    if fruits <> "" then %>
+    <p>SELECTED : <%=fruits%></p>
+  <%end if%>
+```
+
+### How to find the visitors' browser type, IP address and more
+
+```asp
+  <p>
+    <b>You are browsing this site with:</b>
+    <%= request.serverVariables( "http_user_agent" )%>
+  </p>
+  <p>
+    <b>Your IP address is:</b>
+    <%= request.serverVariables( "remote_addr" )%>
+  </p>
+  <p>
+    <b>The DNS lookup of the IP address is:</b>
+    <%= request.serverVariables( "remote_host" )%>
+  </p>
+  <p>
+    <b>The method used to call the page:</b>
+    <%= request.serverVariables( "request_method" )%>
+  </p>
+  <p>
+    <b>The server's domain name:</b>
+    <%= request.serverVariables( "server_name" )%>
+  </p>
+  <p>
+    <b>The server's port:</b>
+    <%= request.serverVariables( "server_port" )%>
+  </p>
+  <p>
+    <b>The server's software:</b>
+    <%= request.serverVariables( "server_software" )%>
+  </p>
+```
+
+### List all servervariables you can ask for
+
+```asp
+  <table>
+    <thead>
+      <tr>
+        <th>item</th>
+        <th>value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <%
+        For Each Item in Request.ServerVariables
+          response.write( "<tr>" )
+            Response.Write( "<td>" & Item & "</tdr>")
+            Response.Write( "<td>" & Request.ServerVariables(Item) & "</td>")
+          response.write( "</tr>" )
+        Next
+      %>
+    </tbody>
+  </table>
+```
+
+### Total number of bytes the user sent
+
+```asp
+  Total bytes : <%=request.totalbytes%>
+```
+
+## Session Object
+
+### Return session id number for a user
+
+```asp
+  session id number : <%=Session.SessionID%>
+```
+
+### Get a session's timeout
+
+```asp
+  <% 
+    response.write( "<p>" )
+    response.write( "  Default Timeout is: " & Session.Timeout & " minutes." )
+    response.write( "</p>" )
+
+    Session.Timeout = 30
+
+    response.write( "<p>" )
+    response.write( "Timeout is now: " & Session.Timeout & " minutes." )
+    response.write( "</p>" )
+  %>
+```
+
+## Server Object
+
+### When was a file last modified?
+
+```asp
+  <%
+    Set fs = Server.CreateObject("Scripting.FileSystemObject")
+    Set rs = fs.GetFile(Server.MapPath("example.asp"))
+    modified = rs.DateLastModified
+  %>
+    This file was last modified on: 
+  <%
+    response.write(modified)
+    Set rs = Nothing
+    Set fs = Nothing
+  %>
+```
+
+### Open a textfile for reading
+
+```asp
+  <%
+    Set FS = Server.CreateObject( "Scripting.FileSystemObject" )
+    Set RS = FS.OpenTextFile( Server.MapPath("text") & "\TextFile.txt", 1 )
+    ' Set RS = FS.OpenTextFile( "\example.asp", 1 )
+    While not rs.AtEndOfStream
+      Response.Write RS.ReadLine
+      Response.Write("<br>")
+    Wend
+  %>
+```
+
+## File System Object
+
+### Does a specified file exist?
+
+```asp
+
+  <%
+    dim filepath, filename
+    filepath = "c:\asdf\asdf\"
+    filename = "asdf.txt"
+    set fs = server.createObject( "scripting.fileSystemObject" )
+
+    if( fs.fileExists( filepath & filename ) ) = true then
+      response.write( filepath & filename & " is exists." )
+    else
+      response.write( filepath & filename & " does not exists." )
+    end if
+
+    set fs = nothing
+  %>
+  
+```
+
+### Does a specified folder exist?
+
+```asp
+
+  <%
+    filepath = "c:\Users"
+
+    set fs = server.createObject( "scripting.fileSystemObject" )
+
+    if( fs.folderExists( filepath ) ) = true then
+      response.write( "Dir " & filepath & " is exists." )
+    else
+      response.write( "Dir " & filepath & " does not exists." )
+    end if
+
+    set fs = nothing
+  %>
+  
+```
+
+### Does a specified drive exist?
+
+```asp
+
+  <%
+    set fs = server.createObject( "scripting.fileSystemObject" )
+
+    if( fs.driveExists( "c:" ) ) = true then
+      response.write( "drive c: is exists." )
+    else
+      response.write( "drive c: does not exists." )
+    end if
+
+    response.write( "<br/>" )
+
+    if( fs.driveExists( "g:" ) ) = true then
+      response.write( "drive g: is exists." )
+    else
+      response.write( "drive g: does not exists." )
+    end if
+
+    set fs = nothing
+  %>
+  
+```
+
+### Get the name of a specified drive
+
+```asp
+
+  <%
+    set fs = server.createObject( "scripting.fileSystemObject" )
+
+    p = fs.getDriveName( "c:\" )
+
+    response.write( "the drive name is : " & p )
+
+    set fs = nothing
+  %>
+  
+```
+
+### Get the name of the parent folder of a specified path
+
+
+```asp
+
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+    p = fs.getParentFolderName( "c:\winnt\cursors\3dgarro.cur" )
+
+    response.write( "The parent folder name of c:\winnt\cursors\3dgarro.cur is: " & p )
+
+    set fs = nothing
+  %>
+  
+```
+
+### Get the file extension
+
+```asp
+
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+
+    response.write( "The file extension of the file 3dgarro is: " )
+    response.write( fs.getExtensionName( "c:\winnt\cursors\3dgarro.cur" ) )
+
+    set fs = nothing
+  %>
+  
+```
+
+### Get the base name of a file or folder
+
+```asp
+
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+
+    response.write( fs.getBaseName( "c:\winnt\cursors\3dgarro.cur" ) )
+    response.write( "<br>" )
+    response.write( fs.getBaseName( "c:\winnt\cursors\" ) )
+    response.write( "<br>" )
+    response.write( fs.getBaseName( "c:\winnt\" ) )
+
+    set fs = nothing
+  %>
+  
+```
+
+### 
+
+```asp
+  
+```
+
+### 
+
+```asp
+  
+```
+
+### 
+
+```asp
+  
+```
+
+### 
+
+```asp
+  
 ```
 
 
