@@ -736,23 +736,293 @@
   
 ```
 
-### 
+## text stream object
+
+### Read textfile
 
 ```asp
-  
+  <p>This is the text in the text file:</p>
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+    set f = fs.openTextFile( Server.MapPath( "text/textfile.txt" ), 1 )
+
+    response.write( f.readAll )
+    f.Close
+
+    set f = nothing
+    set fs = nothing
+  %>
 ```
 
-### 
+### Read only a part of a textfile
 
 ```asp
-  
+  <p>This is the first line of the text file:</p>
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+    set f = fs. openTextFile( server.mapPath( "text/textfile.txt" ), 1 )
+
+    response.write( f.readLine )
+
+    f.close
+    set f = nothing
+    set fs = nothing
+  %>
 ```
 
-### 
+### Read one line of a textfile
 
 ```asp
-  
+  <p>The first four characters in the text file are skipped:</p>
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+    set f = fs.openTextFile( server.mapPath( "text/textfile.txt" ), 1 )
+
+    f.skip( 14 )
+    response.write( f.readAll )
+
+    f.close
+    set f = nothing
+    set fs = nothing
+  %>
 ```
+
+### Read all lines from a textfile
+
+```asp
+  <p>This is all the lines in the text file:</p>
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+    set f = fs.openTextFile( server.mapPath( "text/textfile.txt" ), 1 )
+
+    do while f.atEndOfStream = false
+      response.write( f.readline )
+      response.write( "<br/>" )
+    loop
+
+    f.close
+    set f = nothing
+    set fs = nothing
+  %>
+```
+
+### Skip a part of a textfile
+
+```asp
+  <p>The first four characters in the text file are skipped:</p>
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+    set f = fs.openTextFile( server.mapPath( "text/textfile.txt" ), 1 )
+
+    f.skip( 14 )
+    response.write( f.readAll )
+
+    f.close
+    set f = nothing
+    set fs = nothing
+  %>
+```
+
+### Skip a line of a textfile
+
+```asp
+  <p>The first line in the text file is skipped:</p>
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+    set f = fs.openTextFile( server.mapPath( "text/textfile.txt" ), 1 )
+
+    f.skipLine
+
+    do while f.atEndOfStream = false
+      response.write( f.readline )
+      response.write( "<br/>" )
+    loop
+
+    f.close
+    set f = nothing
+    set fs = nothing
+  %>
+```
+
+### Return current line-number in a text file
+
+```asp
+  <p>This is all the lines in the text file (with line numbers):</p>
+  <ul>
+    <%
+      set fs = server.createObject( "Scripting.FileSystemObject" )
+      set f = fs.openTextFile( server.mapPath( "text/textfile.txt" ), 1 )
+      
+      do while f.atEndOfStream = false
+        response.write( "<li>" & f.line & " " )
+        response.write( f.readline )
+        response.write( "</li>" )
+      loop
+
+      f.close
+      set f = nothing
+      set fs = nothing
+    %>
+  </ul>
+```
+
+### Get column number of the current character in a text file
+
+```asp
+  <%
+    set fs = server.createObject( "Scripting.FileSystemObject" )
+    set f = fs.openTextFile( server.mapPath( "text/textfile.txt" ), 1 )
+    
+    response.write( f.read( 20 ) )
+    response.write( "<p>The cursor is now standing in position " & f.column & " in the text file.</p>" )
+
+    f.close
+    set f = nothing
+    set fs = nothing
+  %>
+```
+
+## Drive Object
+
+### Get the available space of a specified drive
+
+```asp
+  dim fs, d
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  n = "Drive : " & d
+  n = n & "<br/> Available Space in bytes : " & d.availableSpace
+  
+  response.write( n )
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Get the free space of a specified drive
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  n = "Drive : " & d
+  n = n & "<br/> Free Space in bytes : " & d.freeSpace
+  
+  response.write( n )
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Get the total size of a specified drive
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  n = "Drive : " & d
+  n = n & "<br/> Total size in bytes : " & d.totalsize
+  
+  response.write( n )
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Get the drive letter of a specified drive
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  response.write( "The drive letter is " & d.driveletter )
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Get the drive type of a specified drive
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  response.write( "The drive type is " & d.driveType )
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Get the file system of a specified drive
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  response.write( "The file system is " & d.fileSystem )
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Is the drive ready?
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  n = "the " & d.driveLetter
+  
+  if d.isReady = true then
+    n = n & " drive is ready."
+  else
+    n = n & " drive is not ready."
+  end if
+
+  response.write n
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Get the path of a specified drive
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  response.write( "The path is " & d.path )
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Get the root folder of a specified drive
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  response.write( "The root folder is " & d.rootFolder )
+
+  set d = nothing
+  set fs = nothing
+```
+
+### Get the serial number of a specified drive
+
+```asp
+  set fs = server.createObject( "Scripting.fileSystemObject" )
+  set d = fs.getDrive( "c:" )
+
+  response.write( "The serialnumber is " & d.serialnumber )
+
+  set d = nothing
+  set fs = nothing
+```
+
+## File Object
 
 ### 
 
