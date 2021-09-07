@@ -1,0 +1,25 @@
+<SCRIPT LANGUAGE=VBScript RUNAT=Server>
+  sub application_OnStart
+
+    application( "db_conn" ) = "Driver={MariaDB ODBC 3.1 Driver}; server={DB server IP}; port={DB PORT}; UID={DB USER ID}; PWD={DB PASSWORD}; DATABASE=STUDY; OPTION=3;"
+    application( "visitors" ) = 0
+
+  end sub
+
+  sub session_OnStart
+
+    application.Lock
+    application( "visitors" ) = application( "visitors" ) + 1
+    application.UnLock
+
+  end sub
+
+  sub session_OnEnd
+
+    application.Lock
+    application( "visitors" ) = application( "visitors" ) - 1
+    application.UnLock
+
+  end sub
+
+</SCRIPT>

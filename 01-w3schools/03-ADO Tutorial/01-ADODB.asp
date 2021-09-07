@@ -1,7 +1,7 @@
 <% @CODEPAGE="65001" language="vbscript" %>
 <%
   session.CodePage = "65001"
-  ' Response.CharSet = "utf-8"
+  Response.CharSet = "utf-8"
   response.buffer = true
   response.expires = -1
   'response.expiresAbsolute = #Aug 31,2021 09:30:00#
@@ -16,7 +16,7 @@
   <style>
     * { background-color : black; color : white; margin : 1em; }
   </style>
-  <title>VBScript</title>
+  <title> ADODB CONNECTION </title>
 </head>
 <body>
   <head>
@@ -29,13 +29,21 @@
   <p></p>
 
   <%
-    set conn = server.createObject( "ADODB.connection" )
-    ' DB Driver 제공자와,
-    conn.provider = "Microsoft.Jet.OLEDB.4.0"
-    ' DB에 대한 물리적 경로를 지정해야 함.
-    conn.open "c:/webdata/northwind.mdb"
-    ' conn.open "northwind"
+    dim db_conn, query, rs
+
+    set db_conn = server.createObject( "ADODB.connection" )
+    db_conn.open application( "db_conn" )
+
+    query = "SELECT now() AS now FROM DUAL"
+
+    set rs = db_conn.execute( query )
+
+    response.write( rs("NOW") )
+
+    set rs = nothing
+    set db_conn = nothing
   %>
+
 
   <br/><hr/><br/>
   
