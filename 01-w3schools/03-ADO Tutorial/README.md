@@ -92,10 +92,149 @@ ADO 데이터베이스 연결이 생성된 후 이전 장에서 설명한 것처
 "northwind"라는 DB가 있다고 가정하에 다음 행을 사용하여 DB 내의 "customers" 테이블에 엑세스 할 수 있음.  
   
 ```javascript
-  set conn = server.createObject( "ADODB.connection" )
-  conn.provider = "Microsoft.Jet.OLEDB.4.0" 
-  conn.open "c:/webdata/northwind.mdb"
+  set db_conn = server.createObject( "ADODB.connection" )
+  db_conn.open application( "db_conn" )
 
   set rs = server.createObject( "ADODB.recordset" )
-  rs.open "customers", conn
+  rs.open "CUSTOMERS", db_conn 
+```
+  
+
+## ADO SQL 레코드 집합 만들기
+  
+SQL을 이용하여 Customers 테이블의 데이터에 엑세스 가능
+  
+```javascript
+  set db_conn = server.createObject( "ADODB.connection" )
+  db_conn.open application( "db_conn" )
+
+  query = "SELECT * FROM CUSTOMERS"
+
+  set rs = server.createObject( "ADODB.recordset" )
+  rs.open query, db_conn 
+```
+  
+
+## 레코드 집합에서 데이터 추출
+  
+레코드 세트가 열리면 레코드 세트에서 데이터 추출 가능. Customers 테이블의 데이터 출력
+  
+```javascript
+  dim db_conn, query, rs
+
+  set db_conn = server.createObject( "ADODB.connection" )
+  db_conn.open application( "db_conn" )
+
+  query = "SELECT * FROM CUSTOMERS"
+
+  set rs = server.createObject( "ADODB.recordset" )
+  rs.open query, db_conn 
+
+  for each x in rs.fields
+    response.write( x.name )
+    response.write( " : ")
+    response.write( x.value )
+    response.write( "<br/>")
+  next
+```
+  
+  ---  
+  ---  
+  
+# ADO Display
+  
+레코드 세트의 데이터를 표시하는 가장 일반정인 방법은 HTML 테이블에 데이터를 표시하는 것임.  
+  
+
+## 필드 이름 및 필드 값 표시
+  
+```javascript
+  do until rs.eof
+    response.write( "<p>")
+    for each x in rs.fields
+      response.write( x.name )
+      response.write( " : ")
+      response.write( x.value )
+      response.write( "<br/>")
+    next
+    response.write( "</p>")
+
+    response.write( "<br/><br/>")
+    rs.moveNext
+  loop
+```
+  
+
+## 테이블에 필드 이름 및 필드 값 표시
+  
+```javascript
+  <%
+    dim db_conn, query, rs
+
+    set db_conn = server.createObject( "ADODB.connection" )
+    db_conn.open application( "db_conn" )
+
+    query = "SELECT CUST_ID, COMP_NM, FRST_REG_DE FROM CUSTOMERS"
+
+    set rs = server.createObject( "ADODB.recordset" )
+    rs.open query, db_conn 
+  %>
+
+  <table border="1" width="100%" bgcolor="#FFF5EE">
+    <% do until rs.eof %>
+      <tr>
+        <% for each x in rs.fields %>
+          <td><%=x.value%></td>
+        <% next %>
+        <% rs.moveNext %>
+      </tr>
+    <% loop %>
+  </table>
+
+  <%
+    rs.close
+    db_conn.close
+  %>
+```
+  
+
+## HTML 테이블에 헤더 추가
+  
+```javascript
+  <%
+    dim db_conn, query, rs
+
+    set db_conn = server.createObject( "ADODB.connection" )
+    db_conn.open application( "db_conn" )
+
+    query = "SELECT CUST_ID, COMP_NM, FRST_REG_DE FROM CUSTOMERS"
+
+    set rs = server.createObject( "ADODB.recordset" )
+    rs.open query, db_conn 
+  %>
+
+  <table border="1" width="100%" bgcolor="#FFF5EE">
+    <thead>
+      <tr>
+        <% for each x in rs.fields %>
+          <th align='left' bgcolor='#B0C4DE'><%=x.name%></th>
+        <% next %>
+      </tr>
+    </thead>
+    <tbody>
+      <% do until rs.eof %>
+        <tr>
+          <% for each x in rs.fields %>
+            <td><%=x.value%></td>
+          <% next %>
+          <% rs.moveNext %>
+        </tr>
+      <% loop %>
+    </tbody>
+  </table>
+
+  <%
+    rs.close
+    db_conn.close
+  %>
 ```
